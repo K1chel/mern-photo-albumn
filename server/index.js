@@ -4,10 +4,18 @@ import colors from "colors";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connectDB.js";
+import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
 const app = express();
 connectDB();
+
+// Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Middlewares
 app.use(express.json({ limit: "50mb" }));
