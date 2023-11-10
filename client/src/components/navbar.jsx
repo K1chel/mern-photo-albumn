@@ -10,7 +10,7 @@ const Navbar = ({ user }) => {
   const { isLoading, logout } = useLogout();
 
   return (
-    <header className="fixed top-0 inset-0 h-20 border-b">
+    <header className="fixed top-0 inset-0 h-20 border-b z-[50]">
       {isLoading && <Loader />}
       <nav className="h-full w-full flex items-center justify-between max-w-7xl mx-auto backdrop-blur-lg lg:px-13 sm:px-10 px-6">
         <section className="flex items-center  h-full">
