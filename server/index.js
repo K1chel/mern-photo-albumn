@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/connectDB.js";
 import { v2 as cloudinary } from "cloudinary";
 
+import userRoutes from "./routes/user.js";
+import photoRoutes from "./routes/photos.js";
+
 dotenv.config();
 const app = express();
 connectDB();
@@ -24,6 +27,8 @@ app.use(cookieParser());
 app.use(cors());
 
 // Routes
+app.use("/api/users", userRoutes);
+app.use("/api/photos", photoRoutes);
 
 // Port
 app.listen(process.env.PORT, () =>
