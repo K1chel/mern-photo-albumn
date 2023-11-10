@@ -7,7 +7,7 @@ const ToastProvider = () => {
       containerStyle={{}}
       toastOptions={{
         duration: 4000,
-        className: "p-0 m-0 text-sm font-medium",
+        className: "px-2 py-1 m-0 text-sm font-medium",
       }}
     />
   );
