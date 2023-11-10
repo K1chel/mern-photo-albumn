@@ -18,7 +18,8 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "../public/placeholder.jpeg",
+      default:
+        "https://github.com/AntonioErdeljac/next13-airbnb-clone/blob/master/public/images/placeholder.jpg?raw=true",
     },
   },
   {
