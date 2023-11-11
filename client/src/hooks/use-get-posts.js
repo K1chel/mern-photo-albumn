@@ -1,8 +1,10 @@
+import postsAtom from "@/atoms/postAtom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useRecoilState } from "recoil";
 
 const useGetPosts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const useGetPosts = () => {
       }
     };
     fetchPosts();
-  }, []);
+  }, [setPosts]);
 
   return { posts, isLoading };
 };

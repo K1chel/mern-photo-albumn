@@ -4,7 +4,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const getAllPhotos = async (req, res) => {
   try {
-    const photos = await Photo.find();
+    const photos = await Photo.find({}).sort({ createdAt: -1 });
 
     if (!photos) return res.status(404).json({ error: "No photos" });
 

@@ -11,13 +11,17 @@ import usePreviewImage from "@/hooks/user-preview-image";
 import { useRef, useState } from "react";
 import { BiPhotoAlbum } from "react-icons/bi";
 import { Button } from "../ui/button";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "@/atoms/userAtom";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ScrollArea } from "../ui/scroll-area";
+import postsAtom from "@/atoms/postAtom";
 
 const CreatePostModal = () => {
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const fileRef = useRef(null);
   const navigate = useNavigate();
@@ -27,6 +31,8 @@ const CreatePostModal = () => {
   const handleCheckUser = () => {
     if (!user) return navigate("/auth");
   };
+
+  console.log(posts);
 
   const handleCreatePost = async () => {
     try {
@@ -41,6 +47,8 @@ const CreatePostModal = () => {
       const data = await res.json();
       if (data.error) return toast.error(data.error);
 
+      setPosts([data, ...posts]);
+      setIsOpen(false);
       toast("Post created successfully");
       setImgUrl(null);
     } catch (error) {
@@ -51,7 +59,7 @@ const CreatePostModal = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="icon" variant="outline" onClick={handleCheckUser}>
           <BiPhotoAlbum size={20} />
@@ -66,28 +74,31 @@ const CreatePostModal = () => {
         </DialogHeader>
         <div className="p-1">
           {imgUrl ? (
-            <div className="relative">
-              <img
-                src={imgUrl}
-                alt="selected image"
-                className="w-full hh-full object-cover border"
-              />
-              <button
-                onClick={() => setImgUrl(null)}
-                className="absolute top-2 right-2 bg-background rounded-full p-2 hover:opacity-60 transition"
-              >
-                <AiOutlineClose
-                  className="dark:text-white text-black"
-                  size={18}
+            <ScrollArea>
+              <div className="relative">
+                <img
+                  src={imgUrl}
+                  alt="selected image"
+                  className="w-full hh-full object-cover border"
                 />
-              </button>
-              <Button onClick={handleCreatePost} className="w-full mt-3">
-                Submit
-              </Button>
-            </div>
+                <div
+                  onClick={() => setImgUrl(null)}
+                  className="absolute top-2 right-2 bg-background rounded-full p-2 hover:opacity-60 transition cursor-pointer"
+                >
+                  <AiOutlineClose
+                    className="dark:text-white text-black"
+                    size={18}
+                  />
+                </div>
+                <Button onClick={handleCreatePost} className="w-full mt-3">
+                  Submit
+                </Button>
+              </div>
+            </ScrollArea>
           ) : (
             <>
               <Button
+                disabled={isLoading}
                 size="sm"
                 variant="outline"
                 onClick={() => fileRef.current.click()}
